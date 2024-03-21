@@ -1,0 +1,85 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Panier {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">Panier</h1>
+        <br>
+        <ul class="list-group" id="cartList">
+        </ul>
+    </div>
+
+    <script>
+        function displayCart() {
+            var cartList = document.getElementById('cartList');
+            cartList.innerHTML = '';
+
+            var total = 0;
+
+            var productsInCart = JSON.parse(localStorage.getItem('productsInCart')) || {};
+
+            for (var product in productsInCart) {
+                var listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+
+                var totalPrice = productsInCart[product].quantity * parseFloat(productsInCart[product].price);
+
+                listItem.innerHTML = `${productsInCart[product].name} - ${parseFloat(productsInCart[product].price).toFixed(2)} € <br> <br> Quantité : ${productsInCart[product].quantity} <br> Prix total : ${totalPrice.toFixed(2)} € <br> <br>
+                                       <button class="btn btn-danger btn-sm float-right" onclick="removeFromCart('${product}')">Supprimer</button>
+                                       <button class="btn btn-secondary btn-sm float-right mr-2" onclick="updateQuantity('${product}', -1)">-</button>
+                                       <button class="btn btn-secondary btn-sm float-right" onclick="updateQuantity('${product}', 1)">+</button>`;
+                cartList.appendChild(listItem);
+                cartList.appendChild(document.createElement('br'));
+
+                total += totalPrice;
+            }
+
+            var totalElement = document.createElement('li');
+            totalElement.classList.add('list-group-item');
+            totalElement.innerHTML = `Total : ${total.toFixed(2)} €`;
+            cartList.appendChild(totalElement);
+
+            var calculateTotalButton = document.createElement('button');
+            calculateTotalButton.classList.add('btn', 'btn-primary');
+            calculateTotalButton.textContent = 'Calculer le Total';
+            calculateTotalButton.addEventListener('click', function() {
+                alert(`Le total est de : ${total.toFixed(2)} €`);
+            });
+            cartList.appendChild(calculateTotalButton);
+
+            var validateOrderButton = document.createElement('button');
+            validateOrderButton.classList.add('btn', 'btn-success');
+            validateOrderButton.textContent = 'Valider la commande';
+            validateOrderButton.addEventListener('click', function() {
+                var productsInCart = JSON.parse(localStorage.getItem('productsInCart')) || {};
+                var productIds = Object.keys(productsInCart);
+                var params = productIds.map(id => `product_${id}=${productsInCart[id].quantity}`).join('&');
+                window.location.href = `https://s4-8079.nuage-peda.fr/shopshop/index.php?page=payement&total=${total.toFixed(2)}&${params}`;
+            });
+            cartList.appendChild(validateOrderButton);
+        }
+
+        function removeFromCart(product) {
+            var productsInCart = JSON.parse(localStorage.getItem('productsInCart')) || {};
+            delete productsInCart[product];
+            localStorage.setItem('productsInCart', JSON.stringify(productsInCart));
+            displayCart();
+        }
+
+        function updateQuantity(product, change) {
+            var productsInCart = JSON.parse(localStorage.getItem('productsInCart')) || {};
+            if (productsInCart.hasOwnProperty(product)) {
+                productsInCart[product].quantity += change;
+                if (productsInCart[product].quantity < 1) {
+                    delete productsInCart[product];
+                }
+                localStorage.setItem('productsInCart', JSON.stringify(productsInCart));
+                displayCart();
+            }
+        }
+
+        displayCart();
+    </script>
+    <br>
+{% endblock %}

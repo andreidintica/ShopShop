@@ -1,0 +1,65 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Paiement{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">Paiement</h1>
+        <br>
+        <p class="text-center">Le montant total de votre commande est de {{ app.request.query.get('total') }} €.</p>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Informations de livraison</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="fullName">Nom complet</label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Votre nom complet">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Adresse de livraison</label>
+                        <input type="text" class="form-control" id="address" placeholder="Votre adresse">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Ville</label>
+                        <input type="text" class="form-control" id="city" placeholder="Votre ville">
+                    </div>
+                    <div class="form-group">
+                        <label for="postalCode">Code postal</label>
+                        <input type="text" class="form-control" id="postalCode" placeholder="Votre code postal">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Valider la livraison</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Récapitulatif de commande</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Prix unitaire</th>
+                            <th>Quantité</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for productId, product in app.request.query.all %}
+                            {% if productId starts with 'product_' %}
+                                {% set id = productId|replace({'product_': ''}) %}
+                                <tr>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.price }} €</td>
+                                    <td>{{ product.quantity }}</td>
+                                    <td>{{ (product.quantity * product.price)|number_format(2, ',', '.') }} €</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p class="text-right">Total : {{ app.request.query.get('total') }} €</p>
+                <button class="btn btn-success btn-block">Valider le paiement</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

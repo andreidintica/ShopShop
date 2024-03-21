@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Avis des Produits {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <h1 class="text-center">Avis des Produits</h1>
+                <br>
+                <ul class="list-group" id="productList">
+                    {% for product, reviews in product_reviews.items() %}
+                        <li class="list-group-item">
+                            <h3>{{ product }}</h3>
+                            <ul>
+                                {% for review in reviews %}
+                                    <li>{{ review }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'avis.php', true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var productReviews = JSON.parse(xhr.responseText);
+
+                var productReviewsContainer = document.getElementById('productList');
+                for (var product in productReviews) {
+                    if (productReviews.hasOwnProperty(product)) {
+                        var productItem = document.createElement('li');
+                        productItem.classList.add('list-group-item');
+                        productItem.innerHTML = '<h3>' + product + '</h3><ul>';
+                        productReviews[product].forEach(function(review) {
+                            productItem.innerHTML += '<li>' + review + '</li>';
+                        });
+                        productItem.innerHTML += '</ul>';
+                        productReviewsContainer.appendChild(productItem);
+                    }
+                }
+            } else {
+                console.error('Erreur lors de la récupération des avis.');
+            }
+        };
+        xhr.send();
+    </script>
+{% endblock %}

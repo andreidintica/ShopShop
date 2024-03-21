@@ -1,0 +1,208 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Produits {% endblock %}
+
+{% block content %} 
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <h1 class="text-center">Produits</h1> 
+                <br>
+                <ul class="list-group" id="productList">
+                    <li class="list-group-item" onclick="toggleProductDetails('core_i9')">
+                        Intel Core i9-12900K (3.2 GHz / 5.2 GHz) - Stock : 1
+                        <br> Prix : 499.99 €
+                        <br> <br>
+                        <button class="btn btn-success" onclick="showProductImage('core_i9')">Voir l'image du produit</button>
+                        <button class="btn btn-primary" onclick="addToCart('core_i9')">Ajouter au panier</button>
+                        <button class="btn btn-secondary" onclick="window.location.href='index.php?page=contact'">Donnez votre avis sur ce produit</button>
+                        <div class="product-details" id="details_core_i9" style="display: none;">
+                            <br>
+                            <h4>Détails du produit :</h4>
+                            <p>Processeur Intel Core i9-12900K <br> Fréquence : 3.2 GHz / 5.2 GHz <br> Stock : 1</p>
+                            <br> <b> (Voir l'image du produit en bas) </b>
+                        </div>
+                    </li>
+                    <br>
+                    <li class="list-group-item" onclick="toggleProductDetails('rtx_4070')">
+                        Gainward GeForce RTX 4080 Super - Stock : 7
+                        <br> Prix : 799.99 €
+                        <br> <br>
+                        <button class="btn btn-success" onclick="showProductImage('rtx_4070')">Voir l'image du produit</button>
+                        <button class="btn btn-primary" onclick="addToCart('rtx_4070')">Ajouter au panier</button>
+                        <button class="btn btn-secondary" onclick="window.location.href='index.php?page=contact'">Donnez votre avis sur ce produit</button>
+                        <div class="product-details" id="details_rtx_4070" style="display: none;">
+                            <br>
+                            <h4>Détails du produit :</h4>
+                            <p>Carte graphique Gainward GeForce RTX 4080 Super <br> Stock : 7</p>
+                            <br> <b> (Voir l'image du produit en bas) </b>
+                        </div>
+                    </li>
+                    <br>
+                    <li class="list-group-item" onclick="toggleProductDetails('rtx_4090')">
+                        MSI GeForce RTX 4090 GAMING X TRIO 24 Go GDDR6X DLSS3 - Stock : 5
+                        <br> Prix : 1 299.99 €
+                        <br> <br>
+                        <button class="btn btn-success" onclick="showProductImage('rtx_4090')">Voir l'image du produit</button>
+                        <button class="btn btn-primary" onclick="addToCart('rtx_4090')">Ajouter au panier</button>
+                        <button class="btn btn-secondary" onclick="window.location.href='index.php?page=contact'">Donnez votre avis sur ce produit</button>
+                        <div class="product-details" id="details_rtx_4090" style="display: none;">
+                            <br>
+                            <h4>Détails du produit :</h4>
+                            <p>Carte graphique MSI GeForce RTX 4090 GAMING X TRIO 24 Go GDDR6X DLSS3 <br> Stock : 5</p>
+                            <br> <b> (Voir l'image du produit en bas) </b>
+                        </div>
+                    </li>
+                    <br>
+                    <li class="list-group-item" onclick="toggleProductDetails('ryzen_7800')">
+                        AMD Ryzen 9 7800X3D (4.2 GHz / 5.0 GHz) - Stock : 3
+                        <br> Prix : 399.99 €
+                        <br> <br>
+                        <button class="btn btn-success" onclick="showProductImage('ryzen_7800')">Voir l'image du produit</button>
+                        <button class="btn btn-primary" onclick="addToCart('ryzen_7800')">Ajouter au panier</button>
+                        <button class="btn btn-secondary" onclick="window.location.href='index.php?page=contact'">Donnez votre avis sur ce produit</button>
+                        <div class="product-details" id="details_ryzen_7800" style="display: none;">
+                            <br>
+                            <h4>Détails du produit :</h4>
+                            <p>Processeur AMD Ryzen 9 7800X3D <br> Fréquence : 4.2 GHz / 5.0 GHz <br> Stock : 3</p>
+                            <br> <b> (Voir l'image du produit en bas) </b>
+                        </div>
+                    </li>
+                    <br>
+                    <li class="list-group-item" onclick="toggleProductDetails('z790_aorus')">
+                        Gigabyte Z790 AORUS XTREME X - Stock : 2
+                        <br> Prix : 249.99 €
+                        <br> <br>
+                        <button class="btn btn-success" onclick="showProductImage('z790_aorus')">Voir l'image du produit</button>
+                        <button class="btn btn-primary" onclick="addToCart('z790_aorus')">Ajouter au panier</button>
+                        <button class="btn btn-secondary" onclick="window.location.href='index.php?page=contact'">Donnez votre avis sur ce produit</button>
+                        <div class="product-details" id="details_z790_aorus" style="display: none;">
+                            <br>
+                            <h4>Détails du produit :</h4>
+                            <p>Carte mère Gigabyte Z790 AORUS XTREME X <br> Stock : 2</p>
+                            <br> <b> (Voir l'image du produit en bas) </b>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="container" id="productImageContainer" style="display: none;">
+        <h2 class="text-center">Image du Produit : </h2>
+        <br>
+        <h1 id="productName" class="text-center"></h1>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div id="productImage" class="text-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showProductImage(product) {
+            var imageSrc = '';
+            var productName = '';
+            switch (product) {
+                case 'core_i9':
+                    imageSrc = 'images/core_i9.jpg';
+                    productName = 'Intel Core i9-12900K';
+                    showTechnicalSpecs(product, productName, imageSrc);
+                    break;
+                case 'rtx_4070':
+                    imageSrc = 'images/rtx_4080.jpg';
+                    productName = 'Gainward GeForce RTX 4080 Super';
+                    showTechnicalSpecs(product, productName, imageSrc);
+                    break;
+                case 'rtx_4090':
+                    imageSrc = 'images/rtx_4090.jpg';
+                    productName = 'MSI GeForce RTX 4090 GAMING X TRIO 24 Go GDDR6X DLSS3';
+                    showTechnicalSpecs(product, productName, imageSrc);
+                    break;
+                case 'ryzen_7800':
+                    imageSrc = 'images/ryzen_97800.jpg';
+                    productName = 'AMD Ryzen 9 7800X3D';
+                    showTechnicalSpecs(product, productName, imageSrc);
+                    break;
+                case 'z790_aorus':
+                    imageSrc = 'images/z790_aorus.jpg';
+                    productName = 'Gigabyte Z790 AORUS XTREME X';
+                    showTechnicalSpecs(product, productName, imageSrc);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function addToCart(product) {
+            var productName;
+            var productStock;
+            var productPrice;
+            switch (product) {
+                case 'core_i9':
+                    productName = 'Intel Core i9-12900K';
+                    productStock = 1;
+                    productPrice = 499.99;
+                    break;
+                case 'rtx_4070':
+                    productName = 'Gainward GeForce RTX 4080 Super';
+                    productStock = 7;
+                    productPrice = 799.99;
+                    break;
+                case 'rtx_4090':
+                    productName = 'MSI GeForce RTX 4090 GAMING X TRIO 24 Go GDDR6X DLSS3';
+                    productStock = 5;
+                    productPrice = 1299.99;
+                    break;
+                case 'ryzen_7800':
+                    productName = 'AMD Ryzen 9 7800X3D';
+                    productStock = 3;
+                    productPrice = 399.99;
+                    break;
+                case 'z790_aorus':
+                    productName = 'Gigabyte Z790 AORUS XTREME X';
+                    productStock = 2;
+                    productPrice = 249.99;
+                    break;
+                default:
+                    break;
+            }
+
+            var productsInCart = JSON.parse(localStorage.getItem('productsInCart')) || {};
+            if (productsInCart.hasOwnProperty(product)) {
+                productsInCart[product].quantity++;
+            } else {
+                productsInCart[product] = { name: productName, quantity: 1, stock: productStock, price: productPrice };
+            }
+            localStorage.setItem('productsInCart', JSON.stringify(productsInCart));
+
+            alert('Le produit ' + productName + ' a été ajouté au panier.');
+        }
+
+        function showTechnicalSpecs(product, productName, imageSrc) {
+            var productImageContainer = document.getElementById('productImageContainer');
+            var productImage = document.getElementById('productImage');
+            var productNameElement = document.getElementById('productName');
+
+            productNameElement.textContent = productName;
+            productImage.innerHTML = '<img src="' + imageSrc + '" alt="Product Image" style="max-width: 100%; width: 300px; height: 300px;">';
+            productImageContainer.style.display = 'block';
+        }
+
+        function toggleProductDetails(product) {
+            var allProductDetails = document.querySelectorAll('.product-details');
+            allProductDetails.forEach(function(detail) {
+                detail.style.display = 'none';
+            });
+
+            var details = document.getElementById('details_' + product);
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
+    </script>
+{% endblock %}
